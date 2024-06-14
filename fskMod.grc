@@ -1,0 +1,344 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: fskMod
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: fskMod
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 40.0]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '32000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [240, 44.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: /home/guido/gnuradio_proyectos/gr-fsk-tutorial/mensajeEntrada.txt
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'True'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 236.0]
+    rotation: 0
+    state: true
+- name: blocks_repeat_0
+  id: blocks_repeat
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    interp: '100'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 436.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 204.0]
+    rotation: 0
+    state: true
+- name: blocks_uchar_to_float_0
+  id: blocks_uchar_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 280.0]
+    rotation: 0
+    state: enabled
+- name: blocks_unpack_k_bits_bb_1
+  id: blocks_unpack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '8'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [456, 348.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n\n#\n# SPDX-License-Identifier:\
+      \ GPL-3.0\n#\n# GNU Radio Python Flow Graph\n# Title: fskMod\n# GNU Radio version:\
+      \ 3.10.1.1\n\nfrom packaging.version import Version as StrictVersion\n\nif __name__\
+      \ == '__main__':\n    import ctypes\n    import sys\n    if sys.platform.startswith('linux'):\n\
+      \        try:\n            x11 = ctypes.cdll.LoadLibrary('libX11.so')\n    \
+      \        x11.XInitThreads()\n        except:\n            print(\"Warning: failed\
+      \ to XInitThreads()\")\n\nfrom PyQt5 import Qt\nfrom gnuradio import qtgui\n\
+      from gnuradio.filter import firdes\nimport sip\nfrom gnuradio import blocks\n\
+      import pmt\nfrom gnuradio import gr\nfrom gnuradio.fft import window\nimport\
+      \ sys\nimport signal\nfrom argparse import ArgumentParser\nfrom gnuradio.eng_arg\
+      \ import eng_float, intx\nfrom gnuradio import eng_notation\n\n\n\nfrom gnuradio\
+      \ import qtgui\n\nclass fskMod(gr.top_block, Qt.QWidget):\n\n    def __init__(self):\n\
+      \        gr.top_block.__init__(self, \"fskMod\", catch_exceptions=True)\n  \
+      \      Qt.QWidget.__init__(self)\n        self.setWindowTitle(\"fskMod\")\n\
+      \        qtgui.util.check_set_qss()\n        try:\n            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))\n\
+      \        except:\n            pass\n        self.top_scroll_layout = Qt.QVBoxLayout()\n\
+      \        self.setLayout(self.top_scroll_layout)\n        self.top_scroll = Qt.QScrollArea()\n\
+      \        self.top_scroll.setFrameStyle(Qt.QFrame.NoFrame)\n        self.top_scroll_layout.addWidget(self.top_scroll)\n\
+      \        self.top_scroll.setWidgetResizable(True)\n        self.top_widget =\
+      \ Qt.QWidget()\n        self.top_scroll.setWidget(self.top_widget)\n       \
+      \ self.top_layout = Qt.QVBoxLayout(self.top_widget)\n        self.top_grid_layout\
+      \ = Qt.QGridLayout()\n        self.top_layout.addLayout(self.top_grid_layout)\n\
+      \n        self.settings = Qt.QSettings(\"GNU Radio\", \"fskMod\")\n\n      \
+      \  try:\n            if StrictVersion(Qt.qVersion()) < StrictVersion(\"5.0.0\"\
+      ):\n                self.restoreGeometry(self.settings.value(\"geometry\").toByteArray())\n\
+      \            else:\n                self.restoreGeometry(self.settings.value(\"\
+      geometry\"))\n        except:\n            pass\n\n        ##################################################\n\
+      \        # Variables\n        ##################################################\n\
+      \        self.samp_rate = samp_rate = 32000\n\n        ##################################################\n\
+      \        # Blocks\n        ##################################################\n\
+      \        self.qtgui_time_sink_x_0 = qtgui.time_sink_f(\n            1024, #size\n\
+      \            samp_rate, #samp_rate\n            \"\", #name\n            1,\
+      \ #number of inputs\n            None # parent\n        )\n        self.qtgui_time_sink_x_0.set_update_time(0.10)\n\
+      \        self.qtgui_time_sink_x_0.set_y_axis(-1, 1)\n\n        self.qtgui_time_sink_x_0.set_y_label('Amplitude',\
+      \ \"\")\n\n        self.qtgui_time_sink_x_0.enable_tags(True)\n        self.qtgui_time_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE,\
+      \ qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, \"\")\n        self.qtgui_time_sink_x_0.enable_autoscale(False)\n\
+      \        self.qtgui_time_sink_x_0.enable_grid(False)\n        self.qtgui_time_sink_x_0.enable_axis_labels(True)\n\
+      \        self.qtgui_time_sink_x_0.enable_control_panel(False)\n        self.qtgui_time_sink_x_0.enable_stem_plot(False)\n\
+      \n\n        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal\
+      \ 5',\n            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']\n\
+      \        widths = [1, 1, 1, 1, 1,\n            1, 1, 1, 1, 1]\n        colors\
+      \ = ['blue', 'red', 'green', 'black', 'cyan',\n            'magenta', 'yellow',\
+      \ 'dark red', 'dark green', 'dark blue']\n        alphas = [1.0, 1.0, 1.0, 1.0,\
+      \ 1.0,\n            1.0, 1.0, 1.0, 1.0, 1.0]\n        styles = [1, 1, 1, 1,\
+      \ 1,\n            1, 1, 1, 1, 1]\n        markers = [-1, -1, -1, -1, -1,\n \
+      \           -1, -1, -1, -1, -1]\n\n\n        for i in range(1):\n          \
+      \  if len(labels[i]) == 0:\n                self.qtgui_time_sink_x_0.set_line_label(i,\
+      \ \"Data {0}\".format(i))\n            else:\n                self.qtgui_time_sink_x_0.set_line_label(i,\
+      \ labels[i])\n            self.qtgui_time_sink_x_0.set_line_width(i, widths[i])\n\
+      \            self.qtgui_time_sink_x_0.set_line_color(i, colors[i])\n       \
+      \     self.qtgui_time_sink_x_0.set_line_style(i, styles[i])\n            self.qtgui_time_sink_x_0.set_line_marker(i,\
+      \ markers[i])\n            self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])\n\
+      \n        self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(),\
+      \ Qt.QWidget)\n        self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)\n\
+      \        self.blocks_unpack_k_bits_bb_1 = blocks.unpack_k_bits_bb(8)\n     \
+      \   self.blocks_uchar_to_float_0 = blocks.uchar_to_float()\n        self.blocks_throttle_0\
+      \ = blocks.throttle(gr.sizeof_char*1, samp_rate,True)\n        self.blocks_repeat_0\
+      \ = blocks.repeat(gr.sizeof_float*1, 100)\n        self.blocks_file_source_0\
+      \ = blocks.file_source(gr.sizeof_char*1, '/home/guido/gnuradio_proyectos/gr-fsk-tutorial/mensajeEntrada.txt',\
+      \ True, 0, 0)\n        self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)\n\
+      \n\n        ##################################################\n        # Connections\n\
+      \        ##################################################\n        self.connect((self.blocks_file_source_0,\
+      \ 0), (self.blocks_throttle_0, 0))\n        self.connect((self.blocks_repeat_0,\
+      \ 0), (self.qtgui_time_sink_x_0, 0))\n        self.connect((self.blocks_throttle_0,\
+      \ 0), (self.blocks_unpack_k_bits_bb_1, 0))\n        self.connect((self.blocks_uchar_to_float_0,\
+      \ 0), (self.blocks_repeat_0, 0))\n        self.connect((self.blocks_unpack_k_bits_bb_1,\
+      \ 0), (self.blocks_uchar_to_float_0, 0))\n\n\n    def closeEvent(self, event):\n\
+      \        self.settings = Qt.QSettings(\"GNU Radio\", \"fskMod\")\n        self.settings.setValue(\"\
+      geometry\", self.saveGeometry())\n        self.stop()\n        self.wait()\n\
+      \n        event.accept()\n\n    def get_samp_rate(self):\n        return self.samp_rate\n\
+      \n    def set_samp_rate(self, samp_rate):\n        self.samp_rate = samp_rate\n\
+      \        self.blocks_throttle_0.set_sample_rate(self.samp_rate)\n        self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)\n\
+      \n\n\n\ndef main(top_block_cls=fskMod, options=None):\n\n    if StrictVersion(\"\
+      4.5.0\") <= StrictVersion(Qt.qVersion()) < StrictVersion(\"5.0.0\"):\n     \
+      \   style = gr.prefs().get_string('qtgui', 'style', 'raster')\n        Qt.QApplication.setGraphicsSystem(style)\n\
+      \    qapp = Qt.QApplication(sys.argv)\n\n    tb = top_block_cls()\n\n    tb.start()\n\
+      \n    tb.show()\n\n    def sig_handler(sig=None, frame=None):\n        tb.stop()\n\
+      \        tb.wait()\n\n        Qt.QApplication.quit()\n\n    signal.signal(signal.SIGINT,\
+      \ sig_handler)\n    signal.signal(signal.SIGTERM, sig_handler)\n\n    timer\
+      \ = Qt.QTimer()\n    timer.start(500)\n    timer.timeout.connect(lambda: None)\n\
+      \n    qapp.exec_()\n\nif __name__ == '__main__':\n    main()\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    example_param: '1.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('fskMod', 'blk', [('example_param', '1.0')], [('0', 'complex', 1)],
+      [('0', 'complex', 1)], 'Embedded Python Block example - a simple multiply const',
+      ['example_param'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 140.0]
+    rotation: 0
+    state: disabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '1024'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [960, 328.0]
+    rotation: 0
+    state: true
+
+connections:
+- [blocks_file_source_0, '0', blocks_throttle_0, '0']
+- [blocks_repeat_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_throttle_0, '0', blocks_unpack_k_bits_bb_1, '0']
+- [blocks_uchar_to_float_0, '0', blocks_repeat_0, '0']
+- [blocks_unpack_k_bits_bb_1, '0', blocks_uchar_to_float_0, '0']
+
+metadata:
+  file_format: 1
