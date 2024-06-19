@@ -18,3 +18,7 @@ Next is a brief explanation of each of the files available in this repo, and is 
 - fskDem.grc and fskDem.py: This are the flowchart (.grc) and script (.py) for receiving the BFSK signal over the air. It is build upon generic GNURADIO blocks.
   * The flowchart should be run from GNURADIO Companion on hold for transmittions.
   * The outputBits.txt file holds the binary data demodulated.
+
+- fskDecoder.ipynb is a jupyter notebook which receives the outputBits.txt file and produces outputMessage.txt file
+
+- pack_bits.grc and pack_bits.py receives the outMessage.txt and pack again the bits into byte, saving the data, in ASCII text if succesfull decoded was made, in outputPackedMessage.txt
