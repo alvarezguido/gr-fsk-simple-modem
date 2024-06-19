@@ -264,7 +264,7 @@ class fskDem(gr.top_block, Qt.QWidget):
         self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_ff(256-(128/2))
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(0+(128/2))
         self.blocks_float_to_char_0 = blocks.float_to_char(1, 1)
-        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/guido/gnuradio_proyectos/gr-fsk-tutorial/bitsSalida.txt', False)
+        self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, './outputBits.txt', False)
         self.blocks_file_sink_0.set_unbuffered(False)
         self.blocks_complex_to_mag_0_0 = blocks.complex_to_mag(1)
         self.blocks_complex_to_mag_0 = blocks.complex_to_mag(1)
