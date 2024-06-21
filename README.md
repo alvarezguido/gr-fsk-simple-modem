@@ -11,15 +11,21 @@ Is a very simple way to see how signals are produced and received in SDRs, by us
 
 Next is a brief explanation of each of the files available in this repo, and is significance.
 
-## Transmiter (fskMod)
 
-- fskMod.grc and fskMod.py: This are the flowchart (.grc) and script (.py) for reading the content in ./inputMessage.txt, which is then transmited at 2 MSamples/seg over an SDR (hackrf fot his case). Some notes of this flowchart are the following:
+## Transmiter (fskMod)
+<img width="926" alt="fskMod" src="https://github.com/alvarezguido/gr-fsk-simple-modem/assets/47746423/a86a9f7a-074c-4fdd-9bd8-4a62e8d102e4">
+
+For the transmiter, the fskMod.grc flowchart is used as shown in the image above.
+- fskMod.grc and fskMod.py: These are the flowchart (.grc) and script (.py) for reading the content in ./inputMessage.txt, which is then transmited at 2 MSamples/seg over an SDR (hackrf fot his case). Some notes of this flowchart are the following:
   * The block fskMod was developed as an edited Python block, which takes the binary data and produces a complex signal at +/- 20Khz according to the bit. It can be seen by double clicking on it.
   * The Rb (data bit rate), in GNURADIO, results as SDR sample rate (2M Hertz) devided to Rational Resampler Interpolation (20 in this case) devided to Repeat Interpolation (100 for the case).
   * The inputMessage.txt contains some message text (the alphabet) coded is ASCII. Each text character is build of 8 bits (or 1 byte lenght). Then, each bit has to be split so, after the Unpack K bits, each outcoming sample (violet) represent either a 0 (full byte of 00000000) or a 1 (the byte is 00000001). The minimun data type for GNURADIO are bytes, not bits.
-    
+
+As can be seen in the image, in the Options block, it has been selected "No GUI" and "Run to Completition", just because the program will be executed once every second, avoiding been transmiting all the time. The run_tx.sh does it, by simple calling the python script fskMod.py every second, which performs only one transmission before closing the program.
+
 - run_tx.sh: this is a simple bash script for invoking the fskMod.py every 1 second, so the alphabet is transmitted once per second (this prevent of been transmitting all time).
 
+## Receiver (fskDem)
 - fskDem.grc and fskDem.py: This are the flowchart (.grc) and script (.py) for receiving the BFSK signal over the air. It is build upon generic GNURADIO blocks.
   * The flowchart should be run from GNURADIO Companion on hold for transmittions.
   * The outputBits.txt file holds the binary data demodulated.
