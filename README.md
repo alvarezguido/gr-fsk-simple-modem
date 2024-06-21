@@ -1,4 +1,5 @@
-![screenshot]([screenshot.png](/images/gnuradio-logo.png))
+
+![gnuradio-logo](https://github.com/alvarezguido/gr-fsk-simple-modem/assets/47746423/9796f668-a2ac-4795-84e3-088ffe4362a8)
 
 This is a simple and straightforward modulator and demodulator (MODEM) for binary FSK (BFSK) implemented for GNURADIO. 
 It reads from a text file (txt) and transmit binary data around a certain frequency, through and SDR (software defined radio) capable of transmiting signals (PlutoSDR, HackRF, LimeSDR, etc).
