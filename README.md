@@ -1,15 +1,17 @@
 
 ![gnuradio-logo](https://github.com/alvarezguido/gr-fsk-simple-modem/assets/47746423/9796f668-a2ac-4795-84e3-088ffe4362a8)
 
-This is a simple and straightforward modulator and demodulator (MODEM) for binary FSK (BFSK) implemented for GNURADIO. 
-It reads from a text file (txt) and transmit binary data around a certain frequency, through and SDR (software defined radio) capable of transmiting signals (PlutoSDR, HackRF, LimeSDR, etc).
-On the other side, another SDR (rtl-sdr family is sufficient) receives the data and recovers back to the original text.
+This is a simple and straightforward modulator and demodulator (MODEM) for simplest binary FSK (BFSK) implemented for GNURADIO. 
+It reads from a text file (.txt) and transmit binary data around a certain frequency, through an SDR (software defined radio) board capable of transmiting signals (as PlutoSDR, HackRF, LimeSDR, etc).
+On the other side, another SDR (rtl-sdr family is sufficient) receives electromagnetic waves with the data and recovers back to the original text in a text file.
 
-The scope for the proyect is for understending, even for teaching purposes, some principes of digital signal communications, in a real scenario with electromagnetic waves.
+The scope for the proyect is for understending, even for teaching purposes, some principes of digital signal communications, in a real scenario handling electromagnetic waves.
 
 Is a very simple way to see how signals are produced and received in SDRs, by using GNURADIO graphics (QT GUI Waterfall Sink, QT GUI Time Sink, etc.)
 
 Next is a brief explanation of each of the files available in this repo, and is significance.
+
+## Transmiter (fskMod)
 
 - fskMod.grc and fskMod.py: This are the flowchart (.grc) and script (.py) for reading the content in ./inputMessage.txt, which is then transmited at 2 MSamples/seg over an SDR (hackrf fot his case). Some notes of this flowchart are the following:
   * The block fskMod was developed as an edited Python block, which takes the binary data and produces a complex signal at +/- 20Khz according to the bit. It can be seen by double clicking on it.
