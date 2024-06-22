@@ -3,11 +3,9 @@
 
 This is a simple and straightforward modulator and demodulator (MODEM) for simplest binary FSK (BFSK) implemented for GNURADIO. 
 It reads from a text file (.txt) and transmit binary data around a certain frequency, through an SDR (software defined radio) board capable of transmiting signals (as PlutoSDR, HackRF, LimeSDR, etc).
-On the other side, another SDR (rtl-sdr family is sufficient) receives electromagnetic waves with the data and recovers back to the original text in a text file.
+On the other side, another SDR (rtl-sdr family is sufficient) receives electromagnetic waves with the data and recovers back to the original text saving it in a text file.
 
 The scope for the proyect is for understending, even for teaching purposes, some principes of digital signal communications, in a real scenario handling electromagnetic waves.
-
-Is a very simple way to see how signals are produced and received in SDRs, by using GNURADIO graphics (QT GUI Waterfall Sink, QT GUI Time Sink, etc.)
 
 Next is a brief explanation of each of the files available in this repo, and is significance.
 
@@ -29,13 +27,13 @@ The fskMod block was developed as an edited Python block, which takes the binary
 
 Within the block, samp_rate, freq0 and freq1 are input variables to define the frequencies and sample rate for the block. The input signal is Float and the output is Complex, the FSK signal. The key of the block in on the formula used to produce a complex exponential whenever comes a 0 or a 1, as seen in lines 25 and 27 of the python code. The samp_rate results as the Rb*100, so samp_rate=100K for this block.
 
-### Executing the script
-As can be seen in the image, in the Options block, it has been selected "No GUI" and "Run to Completition", just because the program will be executed once every second, avoiding been transmiting all the time. The run_tx.sh does it, by simple calling the python script fskMod.py every second, which performs only one transmission before closing the program.
+### Executing the script for the transmitter
+As can be seen in the flowchart image above, in the Options block, it has been selected "No GUI" and "Run to Completition", just because the program will be executed once every second, avoiding been transmiting all the time. The run_tx.sh does it, by simple calling the python script fskMod.py every second, which performs only one transmission before closing the program.
 
 - run_tx.sh: this is a simple bash script for invoking the fskMod.py every 1 second, so the alphabet is transmitted once per second (this prevent of been transmitting all time).
 
 ## Receiver (fskDem)
-- fskDem.grc and fskDem.py: This are the flowchart (.grc) and script (.py) for receiving the BFSK signal over the air. It is build upon generic GNURADIO blocks.
+- fskDem.grc and fskDem.py: These are the flowchart (.grc) and script (.py) for receiving the BFSK signal over the air. It is build upon generic GNURADIO blocks.
   * The flowchart should be run from GNURADIO Companion on hold for transmittions.
   * The outputBits.txt file holds the binary data demodulated.
 
