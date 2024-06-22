@@ -19,7 +19,7 @@ For the transmiter, the fskMod.grc flowchart is used as shown in the image above
 
 - fskMod.grc and fskMod.py: These are the flowchart (.grc) and script (.py) for reading the content in ./inputMessage.txt, which is then transmited at 2 MSamples/seg over an SDR (hackrf fot his case). Some notes of this flowchart are the following:
   * The block fskMod was developed as an edited Python block, which takes the binary data and produces a complex signal at +/- 20Khz according to the bit. It can be seen by double clicking on it.
-  * The Rb (data bit rate), in GNURADIO, results as SDR sample rate (2M Hertz) devided to Rational Resampler Interpolation (20 in this case) devided to Repeat Interpolation (100 for the case).
+  * The Rb (data bit rate), in GNURADIO, comes as the SDR sample rate (2M Hertz) devided to Rational Resampler Interpolation (20 in this case) devided to Repeat Interpolation (100 for the case), yielding a Rb of 1Kbps.
   * The inputMessage.txt contains some message text (the alphabet) coded is ASCII. Each text character is build of 8 bits (or 1 byte lenght). Then, each bit has to be split so, after the Unpack K bits, each outcoming sample (violet) represent either a 0 (full byte of 00000000) or a 1 (the byte is 00000001). The minimun data type for GNURADIO are bytes, not bits.
 
 ### fskMod
@@ -27,7 +27,7 @@ The fskMod block was developed as an edited Python block, which takes the binary
 
 ![fskMod](https://github.com/alvarezguido/gr-fsk-simple-modem/assets/47746423/b92a020b-8360-4b96-8e7d-4708f4840204)
 
-Within the block, samp_rate, freq0 and freq1 are input variables to define the frequencies and sample rate for the block. The input signal is Float and the output is Complex, the FSK signal. The key of the block in on the formula used to produce a complex exponential whenever comes a 0 or a 1, as seen in lines 25 and 27 of the python code.
+Within the block, samp_rate, freq0 and freq1 are input variables to define the frequencies and sample rate for the block. The input signal is Float and the output is Complex, the FSK signal. The key of the block in on the formula used to produce a complex exponential whenever comes a 0 or a 1, as seen in lines 25 and 27 of the python code. The samp_rate results as the Rb*100, so samp_rate=100K for this block.
 
 ### Executing the script
 As can be seen in the image, in the Options block, it has been selected "No GUI" and "Run to Completition", just because the program will be executed once every second, avoiding been transmiting all the time. The run_tx.sh does it, by simple calling the python script fskMod.py every second, which performs only one transmission before closing the program.
