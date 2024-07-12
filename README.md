@@ -33,15 +33,14 @@ As can be seen in the flowchart image above, in the Options block, it has been s
 - run_tx.sh: this is a simple bash script for invoking the fskMod.py every 1 second, so the text is transmitted once per second (this prevent of been transmitting all time).
 
 ## Receiver (fskDem)
+![fskDem](https://github.com/user-attachments/assets/972fdf24-0d77-403d-8fb0-d023edbc3fb0)
+
 - fskDem.grc and fskDem.py: These are the flowchart (.grc) and script (.py) for receiving the BFSK signal over the air. It is build upon generic GNURADIO blocks.
   * The flowchart should be run from GNURADIO Companion listening for transmittions.
   * The outputBits.txt file holds the binary data demodulated.
 
 - fskDecoder.ipynb is a jupyter notebook which receives the outputBits.txt file and produces outputMessage.txt file
+- pack_bits.grc and pack_bits.py receives the outMessage.txt and pack again the bits into byte, saving the data, in ASCII text if succesfull decoded was made, and record it in outputPackedMessage.txt
+
 
 Suggestions and comments are welcome, at: alvarezguidoa@gmail.com
-
-
- 
-
-- pack_bits.grc and pack_bits.py receives the outMessage.txt and pack again the bits into byte, saving the data, in ASCII text if succesfull decoded was made, and record it in outputPackedMessage.txt
